@@ -1,0 +1,13 @@
+{
+  "name": "molly",
+  "description": "Quo Vadis CLI to update custom DNS records",
+  "version": "0.0.1",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.17.1",
+    "commander": "^2.12.2",
+    "inquirer": "^4.0.1"
+  },
+  "author": "Peter Squicciarini",
+  "license": "MIT"
+}
