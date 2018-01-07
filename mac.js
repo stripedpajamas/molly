@@ -16,7 +16,7 @@ const plistTemplate = ({ username, password }) => `
 	<string>com.quovadis.dns-updater</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/Applications/Utilities/Molly/molly</string>
+		<string>/Applications/Utilities/Molly</string>
 		<string>-q</string>
 		<string>-u</string>
 		<string>dGVzbGE=</string>
@@ -25,8 +25,6 @@ const plistTemplate = ({ username, password }) => `
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
-	<key>StandardOutPath</key>
-	<string>/Applications/Utilities/Molly/log.log</string>
 	<key>StartInterval</key>
 	<integer>300</integer>
 </dict>
@@ -34,8 +32,8 @@ const plistTemplate = ({ username, password }) => `
 `
 /* eslint-enable no-tabs */
 
-const copyCmd = 'sudo mv /tmp/com.quovadis.dns-updater.plist /Library/LaunchDaemons'
-const loadCmd = 'launchctl load -w /Library/LaunchDaemons/com.quovadis.dns-updater.plist'
+const copyCmd = 'sudo chown root /tmp/com.quovadis.dns-updater.plist && sudo mv /tmp/com.quovadis.dns-updater.plist /Library/LaunchDaemons'
+const loadCmd = 'sudo launchctl enable system/com.quovadis.dns-updater && sudo launchctl bootstrap system /Library/LaunchDaemons/com.quovadis.dns-updater.plist'
 
 module.exports = ({ username, password }) => {
   const plist = plistTemplate({ username, password })
@@ -43,6 +41,7 @@ module.exports = ({ username, password }) => {
   let loadOutput = ''
   try {
     fs.writeFileSync('/tmp/com.quovadis.dns-updater.plist', plist)
+    fs.chmodSync('/tmp/com.quovadis.dns-updater.plist', 644)
     copyOutput = exec(copyCmd)
     loadOutput = exec(loadCmd)
   } catch (e) {

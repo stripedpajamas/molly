@@ -80,6 +80,7 @@ program
       try {
         const success = await api.updateDNS(payload)
         if (success) {
+          console.log('updated dns', username, ip)
           process.exit(0)
         } else {
           console.error('failed to update dns')
