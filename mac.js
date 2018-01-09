@@ -1,4 +1,5 @@
 const fs = require('fs')
+const os = require('os')
 const exec = require('child_process').execSync
 
 /* eslint-disable no-tabs */
@@ -10,7 +11,7 @@ const plistTemplate = ({ username, password }) => `
 	<key>EnvironmentVariables</key>
 	<dict>
 		<key>PATH</key>
-		<string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin</string>
+		<string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:/usr/local/sbin</string>
 	</dict>
 	<key>Label</key>
 	<string>com.quovadis.dns-updater</string>
@@ -19,9 +20,9 @@ const plistTemplate = ({ username, password }) => `
 		<string>/Applications/Utilities/Molly</string>
 		<string>-q</string>
 		<string>-u</string>
-		<string>dGVzbGE=</string>
+		<string>${username}</string>
 		<string>-p</string>
-		<string>YXNkZg==</string>
+		<string>${password}</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
@@ -32,21 +33,18 @@ const plistTemplate = ({ username, password }) => `
 `
 /* eslint-enable no-tabs */
 
-const copyCmd = 'sudo chown root /tmp/com.quovadis.dns-updater.plist && sudo mv /tmp/com.quovadis.dns-updater.plist /Library/LaunchDaemons'
-const loadCmd = 'sudo launchctl enable system/com.quovadis.dns-updater && sudo launchctl bootstrap system /Library/LaunchDaemons/com.quovadis.dns-updater.plist'
+const loadCmd = 'launchctl enable gui/`stat -f %u`/com.quovadis.dns-updater && launchctl bootstrap gui/`stat -f %u` ~/Library/LaunchAgents/com.quovadis.dns-updater.plist'
 
 module.exports = ({ username, password }) => {
   const plist = plistTemplate({ username, password })
-  let copyOutput = ''
   let loadOutput = ''
   try {
-    fs.writeFileSync('/tmp/com.quovadis.dns-updater.plist', plist)
-    fs.chmodSync('/tmp/com.quovadis.dns-updater.plist', 644)
-    copyOutput = exec(copyCmd)
+    fs.writeFileSync(`${os.homedir()}/Library/LaunchAgents/com.quovadis.dns-updater.plist`, plist)
     loadOutput = exec(loadCmd)
   } catch (e) {
+    console.log(e)
     return false
   }
   // no output is good output
-  return loadOutput.length < 1 && copyOutput.length < 1
+  return loadOutput.length < 1
 }

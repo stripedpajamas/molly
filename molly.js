@@ -116,10 +116,6 @@ program
       console.log(chalk.green('Cool. I\'ve got everything I need.'))
       console.log(chalk.green('I\'ll set up the scheduled task and do an initial DNS update'))
 
-      if (mac) {
-        console.log(chalk.green.bold('The task scheduler is going to ask for the Mac login password. Put it in and hit enter.'))
-      }
-
       let taskResult
       if (win) {
         taskResult = windowsTask(taskPayload)
