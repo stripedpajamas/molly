@@ -20,9 +20,9 @@ const plistTemplate = ({ username, password }) => `
 		<string>/Applications/Utilities/Molly</string>
 		<string>-q</string>
 		<string>-u</string>
-		<string>${username}</string>
+		<string>"${username}"</string>
 		<string>-p</string>
-		<string>${password}</string>
+		<string>"${password}"</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>

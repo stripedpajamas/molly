@@ -63,10 +63,7 @@ program
     // determine if we even need to update by running an nslookup
     let current
     try {
-      const currentIPs = await util.nslookup(`${username}.quovadis.ninja`)
-      if (currentIPs.length) {
-        current = currentIPs[0]
-      }
+      current = await util.nslookup(`google.com`)
     } catch (e) {
       console.error('failed to get current ip, updating anyway')
     }

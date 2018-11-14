@@ -8,7 +8,7 @@ dns.setServers([
 
 module.exports.nslookup = (host) => {
   return new Promise((resolve, reject) => {
-    dns.resolve4(host, (err, ip) => {
+    dns.lookup(host, { family: 4 }, (err, ip) => {
       if (err) {
         return reject(err)
       }
