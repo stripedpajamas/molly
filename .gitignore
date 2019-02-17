@@ -1,3 +1,6 @@
+*.zip
+*.exe
+Molly
 .DS_Store
 .vscode/
 .idea/
