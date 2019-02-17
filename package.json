@@ -1,7 +1,7 @@
 {
   "name": "molly",
   "description": "Quo Vadis CLI to update custom DNS records",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "main": "molly.js",
   "bin": "molly.js",
   "dependencies": {
